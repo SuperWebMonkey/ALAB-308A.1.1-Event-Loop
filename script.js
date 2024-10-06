@@ -25,6 +25,10 @@ function flatten(ary) {
   return flattenedAry;
 }
 
+function callFlat(ary) {
+  return flatten(ary);
+}
+
 function trampoline(f) {
   // console.log(f);
   while (typeof f === "function") {
@@ -57,22 +61,27 @@ function addAllPrimes(n) {
   alert("calculation is finished");
 }
 
+function callPrime(n, i) {
+  return allPrimesRec(n, i);
+}
+
 function allPrimesRec(n, i) {
   if (n <= i) {
     setTimeout(() => {
       alert("calculation is finshed");
     }, 3000);
-    return;
+    return 1;
   } else {
     isPrime = checkPrime(i);
     if (isPrime) {
       let hEl = document.createElement("h4");
-      console.log(i);
+      // console.log(i);
       hEl.textContent = i;
       primeDiv.appendChild(hEl);
     }
     i++;
-    allPrimesRec(n, i);
+    // console.log(i);
+    return () => allPrimesRec(n, i);
   }
 }
 
@@ -103,8 +112,9 @@ const multiAry2 = [
 // console.log(typeof flatten(multiAry2));
 // let fAry2 = trampoline(flatten(multiAry2));
 // console.log(fAry2);
-console.log(trampoline(flatten(multiAry2)));
+console.log(trampoline(callFlat(multiAry2)));
 
 // addAllPrimes(10000);
 // allPrimesRec(10000, 2);
-trampoline(allPrimesRec(8000, 2)); // at 10,000, call stack is exceeded
+// trampoline(allPrimesRec(8000, 2)); // at 10,000, call stack is exceeded
+trampoline(callPrime(10000, 2));
